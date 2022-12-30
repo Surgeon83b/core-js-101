@@ -84,8 +84,8 @@ function getSumBetweenNumbers(n1, n2) {
  *   10,1,1   =>  false
  *   10,10,10 =>  true
  */
-function isTriangle(/* a, b, c */) {
-  throw new Error('Not implemented');
+function isTriangle(a, b, c) {
+  return (a + b > c) && (a + c > b) && (b + c > a);
 }
 
 
@@ -121,8 +121,11 @@ function isTriangle(/* a, b, c */) {
  *   { top:20, left:20, width: 20, height: 20 }    =>  false
  *
  */
-function doRectanglesOverlap(/* rect1, rect2 */) {
-  throw new Error('Not implemented');
+function doRectanglesOverlap(rect1, rect2) {
+  return !((rect1.left > (rect2.left + rect2.width))
+    || (rect2.left > (rect1.left + rect1.width))
+    || (rect1.top > (rect2.top + rect2.height))
+    || (rect2.top > (rect1.top + rect1.height)));
 }
 
 
@@ -152,8 +155,9 @@ function doRectanglesOverlap(/* rect1, rect2 */) {
  *   { center: { x:0, y:0 }, radius:10 },  { x:10, y:10 }   => false
  *
  */
-function isInsideCircle(/* circle, point */) {
-  throw new Error('Not implemented');
+function isInsideCircle(circle, point) {
+  return ((point.x - circle.center.x) * (point.x - circle.center.x) + (point.y - circle.center.y)
+    * (point.y - circle.center.y) < circle.radius * circle.radius);
 }
 
 
@@ -168,8 +172,17 @@ function isInsideCircle(/* circle, point */) {
  *   'abracadabra'  => 'c'
  *   'entente' => null
  */
-function findFirstSingleChar(/* str */) {
-  throw new Error('Not implemented');
+function findFirstSingleChar(str) {
+  const mas = str.split('');
+  const nonSingled = [];
+  for (let i = 0; i < mas.length; i += 1) {
+    const char = mas[i];
+    if (!nonSingled.includes(char)) {
+      if (mas.indexOf(char, i + 1) === -1) return char;
+      nonSingled.push(char);
+    }
+  }
+  return null;
 }
 
 
@@ -195,8 +208,12 @@ function findFirstSingleChar(/* str */) {
  *   5, 3, true, true   => '[3, 5]'
  *
  */
-function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
-  throw new Error('Not implemented');
+function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
+  const start = isStartIncluded ? '[' : '(';
+  const end = isEndIncluded ? ']' : ')';
+  const st = (a < b) ? a : b;
+  const en = (a < b) ? b : a;
+  return `${start}${st}, ${en}${end}`;
 }
 
 
@@ -212,8 +229,11 @@ function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
  * 'rotator' => 'rotator'
  * 'noon' => 'noon'
  */
-function reverseString(/* str */) {
-  throw new Error('Not implemented');
+function reverseString(str) {
+  return str.split('').reduce((res, char, i) => {
+    res.push(str[str.length - i - 1]);
+    return res;
+  }, []).join('');
 }
 
 
@@ -229,8 +249,8 @@ function reverseString(/* str */) {
  *   87354 => 45378
  *   34143 => 34143
  */
-function reverseInteger(/* num */) {
-  throw new Error('Not implemented');
+function reverseInteger(num) {
+  return parseInt(reverseString(num.toString()), 10);
 }
 
 
