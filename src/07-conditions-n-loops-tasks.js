@@ -274,8 +274,19 @@ function reverseInteger(num) {
  *   5436468789016589 => false
  *   4916123456789012 => false
  */
-function isCreditCardNumber(/* ccn */) {
-  throw new Error('Not implemented');
+function isCreditCardNumber(ccn) {
+  const num = reverseString(ccn.toString()).split('');
+  let sum = 0;
+  for (let i = 0; i < num.length; i += 1) {
+    if ((i % 2) === 0) {
+      sum += +num[i];
+    } else if (+num[i] > 4) {
+      sum += 2 * num[i] - 9;
+    } else {
+      sum += 2 * num[i];
+    }
+  }
+  return (sum % 10 === 0);
 }
 
 /**
@@ -292,8 +303,11 @@ function isCreditCardNumber(/* ccn */) {
  *   10000 ( 1+0+0+0+0 = 1 ) => 1
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
-function getDigitalRoot(/* num */) {
-  throw new Error('Not implemented');
+function getDigitalRoot(num) {
+  function sumDigits(n) {
+    return n.toString().split('').reduce((sum, digit) => sum + +digit, 0);
+  }
+  return (num < 10) ? num : getDigitalRoot(sumDigits(num));
 }
 
 
@@ -318,8 +332,24 @@ function getDigitalRoot(/* num */) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
+function isBracketsBalanced(str) {
+  const balanceObj = {
+    '{': '}',
+    '(': ')',
+    '[': ']',
+    '<': '>',
+  };
+  const stack = [];
+  for (let i = 0; i < str.length; i += 1) {
+    const char = str[i];
+    if (char in balanceObj) stack.push(char);
+    else if (!stack.length) return false;
+    else {
+      const popped = stack.pop();
+      if (balanceObj[popped] !== char) return false;
+    }
+  }
+  return !stack.length;
 }
 
 
@@ -343,8 +373,8 @@ function isBracketsBalanced(/* str */) {
  *    365, 4  => '11231'
  *    365, 10 => '365'
  */
-function toNaryString(/* num, n */) {
-  throw new Error('Not implemented');
+function toNaryString(num, n) {
+  return num.toString(n);
 }
 
 
@@ -383,8 +413,23 @@ function getCommonDirectoryPath(/* pathes */) {
  *                         [ 6 ]]
  *
  */
-function getMatrixProduct(/* m1, m2 */) {
-  throw new Error('Not implemented');
+function getMatrixProduct(m1, m2) {
+  const m = m1.length;
+  const n = m1[0].length;
+  const p = m2[0].length;
+  const res = new Array(m);
+  for (let i = 0; i < m; i += 1) {
+    res[i] = new Array(p);
+  }
+  for (let i = 0; i < m; i += 1) {
+    for (let j = 0; j < p; j += 1) {
+      res[i][j] = 0;
+      for (let k = 0; k < n; k += 1) {
+        res[i][j] += m1[i][k] * m2[k][j];
+      }
+    }
+  }
+  return res;
 }
 
 
@@ -418,8 +463,31 @@ function getMatrixProduct(/* m1, m2 */) {
  *    [    ,   ,    ]]
  *
  */
-function evaluateTicTacToePosition(/* position */) {
-  throw new Error('Not implemented');
+function evaluateTicTacToePosition(position) {
+  const winPos = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+  ];
+  const position2 = [...position];
+  if (position2[0].length === 2) position2[0] = [...position2[0], undefined];
+  const linePos = [].concat(...position2);
+  // eslint-disable-next-line no-restricted-syntax
+  for (const pos of winPos) {
+    if (
+      (linePos[pos[0]] === linePos[pos[1]])
+      && (linePos[pos[1]] === linePos[pos[2]])
+      && (linePos[pos[0]] !== undefined)
+    ) {
+      return linePos[pos[0]];
+    }
+  }
+  return undefined;
 }
 
 
